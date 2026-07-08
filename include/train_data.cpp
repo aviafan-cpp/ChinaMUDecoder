@@ -1,10 +1,9 @@
 #include "train_data.hpp"
-#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <sstream>
-#include <stdexcept>
+#include <algorithm>
 
 namespace train_data
 {
@@ -147,7 +146,6 @@ namespace train_data
     std::vector<train_model> train_model_manager::find_train_model(unsigned int plate_number) const
     {
         std::vector<train_model> find_tms;
-
         for(size_t i = 0; i < trains.size(); ++i)
         {
             if(plate_number >= trains[i].plate_number_start && plate_number <= trains[i].plate_number_end)
@@ -155,7 +153,27 @@ namespace train_data
                 find_tms.emplace_back(trains[i]);
             }
         }
+        return find_tms;
+    }
 
+    std::vector<std::string> train_model_manager::get_train_type_list() const
+    {
+        std::vector<std::string> result;
+        for(size_t i = 0; i < trains.size(); ++i)
+        {
+            auto it = std::find(result.begin(), result.end(), trains[i].train_type);
+            if(it == result.end()) result.push_back(trains[i].train_type);
+        }
+        return result;
+    }
+
+    std::vector<train_model> train_model_manager::find_train_type(std::string train_type) const
+    {
+        std::vector<train_model> find_tms;
+        for(size_t i = 0; i < trains.size(); ++i)
+        {
+            if(trains[i].train_type == train_type) find_tms.push_back(trains[i]);
+        }
         return find_tms;
     }
 }

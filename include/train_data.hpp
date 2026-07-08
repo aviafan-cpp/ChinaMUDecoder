@@ -29,6 +29,8 @@ namespace train_data
         void remove_subrange(const std::string& train_name, unsigned int left, unsigned int right); // 处理删除命令：从匹配的型号区间中移除指定子区间
 
         std::vector<train_model> find_train_model(unsigned int plate_number) const; // 获取所有包含该车号的型号
+        std::vector<std::string> get_train_type_list() const; // 获取所有命名
+        std::vector<train_model> find_train_type(std::string train_type) const; // 获取所有使用该命名的型号
     };
 }
 

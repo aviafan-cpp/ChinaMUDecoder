@@ -1,7 +1,9 @@
-#数据库版本：20260620
+#数据库版本：20260708
 #数据来源：china-emu.cn
 #注:截稿时，china-emu在Cinova2.0上有空缺,
 #所以缺失部分CRH6F和CRH6F-A。
+
+CR400AF 350 8 复兴号 0207 0208 https://www.china-emu.cn/Trains/Model/Detail-12001-101-S.html
 
 CR400AF 350 8 复兴号 2001 2034 https://www.china-emu.cn/Trains/Model/Detail-12002-101-S.html
 CR400AF 350 8 复兴号 2213 2213 https://www.china-emu.cn/Trains/Model/Detail-12002-101-S.html
@@ -30,6 +32,9 @@ CR400AF-B 350 17 复兴号 2206 2210 https://www.china-emu.cn/Trains/Model/Detai
 
 CR400AF-G 350 8 复兴号 2215 2217 https://www.china-emu.cn/Trains/Model/Detail-12012-101-S.html
 CR400AF-G 350 8 复兴号 0021 0021 https://www.china-emu.cn/Trains/Model/Detail-12013-105-S.html
+
+CR400AF-J 385 8 复兴号（动检） 0002 0002 https://www.china-emu.cn/Trains/Model/Detail-12014-103-S.html
+CR400AF-J 385 8 复兴号（动检） 2808 2808 https://www.china-emu.cn/Trains/Model/Detail-12016-103-S.html
 
 CR400AF-C 350 8 复兴号 2214 2214 https://www.china-emu.cn/Trains/Model/Detail-12110-101-S.html
 
@@ -66,6 +71,11 @@ CR400AF-BS 350 17 复兴号 2341 2345 https://www.china-emu.cn/Trains/Model/Deta
 CR400AF-AE 350 16 复兴号 2398 2402 https://www.china-emu.cn/Trains/Model/Detail-12125-102-S.html
 
 
+CR400BF 350 8 复兴号 0305 0305 https://www.china-emu.cn/Trains/Model/Detail-13031-101-S.html
+CR400BF 350 8 复兴号 0503 0507 https://www.china-emu.cn/Trains/Model/Detail-13031-101-S.html
+
+CR400BF 350 8 复兴号 3001 3023 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
+
 CR400BF 350 8 复兴号 3001 3023 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
 CR400BF 350 8 复兴号 3034 3049 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
 CR400BF 350 8 复兴号 3059 3091 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
@@ -79,7 +89,7 @@ CR400BF-A 350 16 复兴号 3024 3033 https://www.china-emu.cn/Trains/Model/Detai
 CR400BF-A 350 16 复兴号 3050 3058 https://www.china-emu.cn/Trains/Model/Detail-13033-101-S.html
 CR400BF-A 350 16 复兴号 3092 3105 https://www.china-emu.cn/Trains/Model/Detail-13033-101-S.html
 CR400BF-A 350 16 复兴号 5048 5067 https://www.china-emu.cn/Trains/Model/Detail-13033-101-S.html
-CR400BF-A 350 16 复兴号 5082 5069 https://www.china-emu.cn/Trains/Model/Detail-13033-101-S.html
+CR400BF-A 350 16 复兴号 5082 5096 https://www.china-emu.cn/Trains/Model/Detail-13033-101-S.html
 CR400BF-A 350 16 复兴号 5156 5161 https://www.china-emu.cn/Trains/Model/Detail-13033-101-S.html
 
 CR400BF-B 350 17 复兴号 5097 5098 https://www.china-emu.cn/Trains/Model/Detail-13034-101-S.html
@@ -118,6 +128,9 @@ CR400BF-GZ 350 8 复兴号 5214 5219 https://www.china-emu.cn/Trains/Model/Detai
 CR400BF-GZ 350 8 复兴号 5256 5262 https://www.china-emu.cn/Trains/Model/Detail-13115-101-S.html
 CR400BF-GZ 350 8 复兴号 5143 5143 https://www.china-emu.cn/Trains/Model/Detail-13115-101-S.html
 CR400BF-GZ 350 8 复兴号 5203 5207 https://www.china-emu.cn/Trains/Model/Detail-13115-101-S.html
+
+CR400BF-J 385 8 复兴号（动检） 0001 0001 https://www.china-emu.cn/Trains/Model/Detail-13300-103-S.html
+CR400BF-J 385 8 复兴号（动检） 0003 0003 https://www.china-emu.cn/Trains/Model/Detail-13301-103-S.html
 
 CR400BF-S 350 8 复兴号 3157 3193 https://www.china-emu.cn/Trains/Model/Detail-13120-101-S.html
 CR400BF-S 350 8 复兴号 3194 3213 https://www.china-emu.cn/Trains/Model/Detail-13120-101-S.html
@@ -217,6 +230,10 @@ CR200J3-C 160 18 复兴号 5066 5074 https://www.china-emu.cn/Trains/Model/Detai
 CR200J3-C 160 19 复兴号 5046 5053 https://www.china-emu.cn/Trains/Model/Detail-10114-102-S.html
 CR200J3-C 160 19 复兴号 5075 5079 https://www.china-emu.cn/Trains/Model/Detail-10114-102-S.html
 
+CR200J1（动检） 160 6 复兴号（动检） 9201 9201 https://www.china-emu.cn/Trains/Model/Detail-10198-103-S.html
+
+CR200J3（动检） 160 6 复兴号（动检） 9101 9101 https://www.china-emu.cn/Trains/Model/Detail-10200-103-S.html
+
 
 CRH380A 310 8 和谐号 2501 2540 https://www.china-emu.cn/Trains/Model/Detail-30001-101-S.html
 CRH380A 310 8 和谐号 2641 2925 https://www.china-emu.cn/Trains/Model/Detail-30002-101-S.html
@@ -231,6 +248,10 @@ CRH380AL 310 16 和谐号 2541 2570 https://www.china-emu.cn/Trains/Model/Detail
 CRH380AL 310 16 和谐号 2571 2640 https://www.china-emu.cn/Trains/Model/Detail-30007-101-S.html
 CRH380AL 310 16 和谐号 2913 2930 https://www.china-emu.cn/Trains/Model/Detail-30008-101-S.html
 -CRH380AL 2921 2925
+
+CRH380AJ 385 8 和谐号（动检） 0201 0203 https://www.china-emu.cn/Trains/Model/Detail-30004-103-S.html
+CRH380AJ 385 8 和谐号（动检） 2808 2808 https://www.china-emu.cn/Trains/Model/Detail-30005-103-S.html
+CRH380AJ 385 8 和谐号（动检） 2818 2818 https://www.china-emu.cn/Trains/Model/Detail-30005-103-S.html
 
 CRH380AN 310 8 和谐号 0206 0206 https://www.china-emu.cn/Trains/Model/Detail-30010-101-S.html
 
@@ -249,6 +270,8 @@ CRH380BG 310 8 和谐号 5684 5729 https://www.china-emu.cn/Trains/Model/Detail-
 CRH380BG 310 8 和谐号 5762 5786 https://www.china-emu.cn/Trains/Model/Detail-31003-101-S.html
 CRH380BG 310 8 和谐号 5803 5822 https://www.china-emu.cn/Trains/Model/Detail-31003-101-S.html
 
+CRH380BJ-A 385 8 和谐号（动检） 0504 0504 https://www.china-emu.cn/Trains/Model/Detail-31005-103-S.html
+
 CRH380BL 310 16 和谐号 3501 3542 https://www.china-emu.cn/Trains/Model/Detail-31006-101-S.html
 CRH380BL 310 16 和谐号 5501 5540 https://www.china-emu.cn/Trains/Model/Detail-31006-101-S.html
 
@@ -260,6 +283,8 @@ CRH380BL 310 16 和谐号 3775 3788 https://www.china-emu.cn/Trains/Model/Detail
 CRH380BL 310 16 和谐号 5823 5828 https://www.china-emu.cn/Trains/Model/Detail-31008-101-S.html
 CRH380BL 310 16 和谐号 5889 5898 https://www.china-emu.cn/Trains/Model/Detail-31008-101-S.html
 
+
+CRH380BJ 385 8 和谐号（动检） 0301 0301 https://www.china-emu.cn/Trains/Model/Detail-31004-103-S.html
 
 CRH380CL 310 16 和谐号 5601 5625 https://www.china-emu.cn/Trains/Model/Detail-31010-101-S.html
 
@@ -289,6 +314,8 @@ CRH2A 250 8 和谐号 2001 2009 https://www.china-emu.cn/Trains/Model/Detail-220
 CRH2A 250 8 和谐号 2011 2060 https://www.china-emu.cn/Trains/Model/Detail-22001-101-S.html
 CRH2A 250 8 和谐号 2151 2211 https://www.china-emu.cn/Trains/Model/Detail-22001-101-S.html
 
+CRH2A 275 8 和谐号（动检） 2010 2010 https://www.china-emu.cn/Trains/Model/Detail-22003-103-S.html
+
 CRH2A 250 8 和谐号 2212 2416 https://www.china-emu.cn/Trains/Model/Detail-22002-101-S.html
 CRH2A 250 8 和谐号 2427 2459 https://www.china-emu.cn/Trains/Model/Detail-22002-101-S.html
 CRH2A 250 8 和谐号 2473 2499 https://www.china-emu.cn/Trains/Model/Detail-22002-101-S.html
@@ -307,11 +334,16 @@ CRH2B 250 16 和谐号 4096 4105 https://www.china-emu.cn/Trains/Model/Detail-22
 CRH2C 300 8 和谐号 2062 2090 https://www.china-emu.cn/Trains/Model/Detail-22006-101-S.html
 -CRH2C 2068 2068
 
+CRH2C 385 8 和谐号（动检） 2061 2061 https://www.china-emu.cn/Trains/Model/Detail-22008-103-S.html
+CRH2C 385 8 和谐号（动检） 2068 2068 https://www.china-emu.cn/Trains/Model/Detail-22008-103-S.html
+
 CRH2C 310 8 和谐号 2091 2110 https://www.china-emu.cn/Trains/Model/Detail-22007-101-S.html
 CRH2C 310 8 和谐号 2141 2149 https://www.china-emu.cn/Trains/Model/Detail-22007-101-S.html
 
 CRH2E 250 16 和谐号 2121 2140 https://www.china-emu.cn/Trains/Model/Detail-22010-102-S.html
 -CRH2E 2139 2139
+
+CRH2J 275 8 和谐号（动检） 0205 0205 https://www.china-emu.cn/Trains/Model/Detail-22011-103-S.html
 
 CRH2E 250 16 和谐号 2461 2461 https://www.china-emu.cn/Trains/Model/Detail-22013-102-S.html
 
@@ -351,6 +383,8 @@ CRH5G 250 8 和谐号 5206 5217 https://www.china-emu.cn/Trains/Model/Detail-250
 CRH5G 250 8 和谐号 5191 5191 https://www.china-emu.cn/Trains/Model/Detail-25005-101-S.html
 
 CRH5G 250 8 和谐号 5218 5229 https://www.china-emu.cn/Trains/Model/Detail-25006-101-S.html
+
+CRH5J 275 8 和谐号（动检） 0501 0501 https://www.china-emu.cn/Trains/Model/Detail-25007-103-S.html
 
 
 CRH6A 200 8 广东城际/珠三角城际 0401 0408 https://www.china-emu.cn/Trains/Model/Detail-26001-201-S.html
