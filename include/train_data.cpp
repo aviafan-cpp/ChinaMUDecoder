@@ -4,15 +4,35 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <iomanip>
+#include <exception>
 
 namespace train_data
 {
+    std::string train_model::to_string() const
+    {
+        std::ostringstream plate_number_start_st;
+        plate_number_start_st << std::setw(4) << std::setfill('0') << this->plate_number_start;
+        std::ostringstream plate_number_end_st;
+        plate_number_end_st << std::setw(4) << std::setfill('0') << this->plate_number_end;
+
+        std::string content
+        = this->name
+        + " " + std::to_string(this->max_speed) + "km/h"
+        + " " + std::to_string(this->cars_number) + "车厢"
+        + " " + this->train_type
+        + " " + plate_number_start_st.str();
+        if(this->plate_number_start != this->plate_number_end) content += "-" + plate_number_end_st.str();
+
+        return content;
+    }
+
     void train_model_manager::add_train_model(train_model add_tm)
     {
         trains.push_back(add_tm);
     }
 
-    void train_model_manager::add_train_model_from_file(std::string path)
+    void train_model_manager::add_train_model_from_file(const std::string& path)
     {
         std::ifstream file(path);
         if (!file.is_open()) return;
@@ -156,6 +176,27 @@ namespace train_data
         return find_tms;
     }
 
+    std::vector<std::string> train_model_manager::get_train_name_list() const
+    {
+        std::vector<std::string> result;
+        for(size_t i = 0; i < trains.size(); ++i)
+        {
+            auto it = std::find(result.begin(), result.end(), trains[i].name);
+            if(it == result.end()) result.push_back(trains[i].name);
+        }
+        return result;
+    }
+
+    std::vector<train_model> train_model_manager::filter_train_name(const std::string& train_name) const
+    {
+        std::vector<train_model> find_tn;
+        for(size_t i = 0; i < trains.size(); ++i)
+        {
+            if(trains[i].name == train_name) find_tn.push_back(trains[i]);
+        }
+        return find_tn;
+    }
+
     std::vector<std::string> train_model_manager::get_train_type_list() const
     {
         std::vector<std::string> result;
@@ -167,7 +208,7 @@ namespace train_data
         return result;
     }
 
-    std::vector<train_model> train_model_manager::find_train_type(std::string train_type) const
+    std::vector<train_model> train_model_manager::filter_train_type(const std::string& train_type) const
     {
         std::vector<train_model> find_tms;
         for(size_t i = 0; i < trains.size(); ++i)

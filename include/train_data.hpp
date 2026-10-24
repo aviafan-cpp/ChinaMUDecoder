@@ -17,6 +17,8 @@ namespace train_data
         unsigned int plate_number_end; // 末尾车号
 
         std::string science_website_url; // 引用的科普软件链接
+
+        std::string to_string() const;
     };
 
     struct train_model_manager
@@ -24,13 +26,15 @@ namespace train_data
         std::vector<train_model> trains;
 
         void add_train_model(train_model add_tm);
-        void add_train_model_from_file(std::string path);
+        void add_train_model_from_file(const std::string& path);
 
         void remove_subrange(const std::string& train_name, unsigned int left, unsigned int right); // 处理删除命令：从匹配的型号区间中移除指定子区间
 
         std::vector<train_model> find_train_model(unsigned int plate_number) const; // 获取所有包含该车号的型号
+        std::vector<std::string> get_train_name_list() const; // 获取所有车型名称
+        std::vector<train_model> filter_train_name(const std::string& train_name) const; // 获取所有使用该命名的车型名称
         std::vector<std::string> get_train_type_list() const; // 获取所有命名
-        std::vector<train_model> find_train_type(std::string train_type) const; // 获取所有使用该命名的型号
+        std::vector<train_model> filter_train_type(const std::string& train_type) const; // 获取所有使用该命名的型号
     };
 }
 
