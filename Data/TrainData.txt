@@ -1,4 +1,4 @@
-#数据库版本：20261018
+#数据库版本：20261113
 #数据来源：china-emu.cn
 #（以CC BY-SA 3.0引入）
 #数据文件以CC BY-SA 4.0发布
@@ -45,9 +45,9 @@ CR400AF-Z 350 8 复兴号 2257 2310 https://www.china-emu.cn/Trains/Model/Detail
 CR400AF-Z 350 8 复兴号 2316 2340 https://www.china-emu.cn/Trains/Model/Detail-12111-101-S.html
 CR400AF-Z 350 8 复兴号 1041 1063 https://www.china-emu.cn/Trains/Model/Detail-12111-101-S.html
 
-CR400AF-AZ 350 8 复兴号 2311 2315 https://www.china-emu.cn/Trains/Model/Detail-12111-101-S.html
+CR400AF-AZ 350 16 复兴号 2311 2315 https://www.china-emu.cn/Trains/Model/Detail-12111-101-S.html
 
-CR400AF-BZ 350 8 复兴号 2249 2250 https://www.china-emu.cn/Trains/Model/Detail-12111-101-S.html
+CR400AF-BZ 350 17 复兴号 2249 2250 https://www.china-emu.cn/Trains/Model/Detail-12111-101-S.html
 
 CR400AF-S 350 8 复兴号 2346 2397 https://www.china-emu.cn/Trains/Model/Detail-12121-101-S.html
 CR400AF-S 350 8 复兴号 2403 2425 https://www.china-emu.cn/Trains/Model/Detail-12121-101-S.html
@@ -86,12 +86,9 @@ CR400BF 350 8 复兴号 0305 0305 https://www.china-emu.cn/Trains/Model/Detail-1
 CR400BF 350 8 复兴号 0503 0507 https://www.china-emu.cn/Trains/Model/Detail-13031-101-S.html
 
 CR400BF 350 8 复兴号 3001 3023 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
-
-CR400BF 350 8 复兴号 3001 3023 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
 CR400BF 350 8 复兴号 3034 3049 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
 CR400BF 350 8 复兴号 3059 3091 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
 CR400BF 350 8 复兴号 3106 3107 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
-CR400BF 350 8 复兴号 3059 3091 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
 CR400BF 350 8 复兴号 5001 5047 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
 CR400BF 350 8 复兴号 5068 5081 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
 CR400BF 350 8 复兴号 5106 5112 https://www.china-emu.cn/Trains/Model/Detail-13032-101-S.html
@@ -115,7 +112,7 @@ CR400BF 350 8 复兴号 0031 0031 https://www.china-emu.cn/Trains/Model/Detail-1
 
 CR400BF-G 350 8 复兴号 0051 0051 https://www.china-emu.cn/Trains/Model/Detail-13051-105-S.html
 
-CR400BF-C 350 8 复兴号 5144 5155 https://www.china-emu.cn/Trains/Model/Detail-13100-101-S.html
+CR400BF-C 350 8 复兴号 5144 5145 https://www.china-emu.cn/Trains/Model/Detail-13100-101-S.html
 
 CR400BF-C 350 8 复兴号 5162 5162 https://www.china-emu.cn/Trains/Model/Detail-13101-101-S.html
 
@@ -123,7 +120,7 @@ CR400BF-Z 350 8 复兴号 0311 0312 https://www.china-emu.cn/Trains/Model/Detail
 CR400BF-Z 350 8 复兴号 3117 3124 https://www.china-emu.cn/Trains/Model/Detail-13111-101-S.html
 CR400BF-Z 350 8 复兴号 5210 5213 https://www.china-emu.cn/Trains/Model/Detail-13111-101-S.html
 CR400BF-Z 350 8 复兴号 0511 0514 https://www.china-emu.cn/Trains/Model/Detail-13111-101-S.html
-CR400BF-Z 350 8 复兴号 0512 0523 https://www.china-emu.cn/Trains/Model/Detail-13111-101-S.html
+CR400BF-Z 350 8 复兴号 0521 0523 https://www.china-emu.cn/Trains/Model/Detail-13111-101-S.html
 CR400BF-Z 350 8 复兴号 5220 5251 https://www.china-emu.cn/Trains/Model/Detail-13111-101-S.html
 CR400BF-Z 350 8 复兴号 3146 3156 https://www.china-emu.cn/Trains/Model/Detail-13111-101-S.html
 CR400BF-Z 350 8 复兴号 5263 5275 https://www.china-emu.cn/Trains/Model/Detail-13111-101-S.html
@@ -204,7 +201,7 @@ CR200J3-A 160 9 复兴号 1001 1005 https://www.china-emu.cn/Trains/Model/Detail
 CR200J3-A 160 9 复兴号 1006 1048 https://www.china-emu.cn/Trains/Model/Detail-10025-101-S.html
 
 CR200J3-A 160 18 复兴号 5001 5009 https://www.china-emu.cn/Trains/Model/Detail-10026-102-S.html
-CR200J3-A 160 18 复兴号 5010 5019 https://www.china-emu.cn/Trains/Model/Detail-10026-102-S.html
+CR200J3-A 160 18 复兴号 5010 5018 https://www.china-emu.cn/Trains/Model/Detail-10026-102-S.html
 
 CR200J1-B 160 9 复兴号 2048 2071 https://www.china-emu.cn/Trains/Model/Detail-10051-101-S.html
 CR200J1-B 160 9 复兴号 2072 2074 https://www.china-emu.cn/Trains/Model/Detail-10051-101-S.html

@@ -163,7 +163,7 @@ namespace train_data
         }
     }
 
-    std::vector<train_model> train_model_manager::find_train_model(unsigned int plate_number) const
+    std::vector<train_model> train_model_manager::filter_train_model(unsigned int plate_number) const
     {
         std::vector<train_model> find_tms;
         for(size_t i = 0; i < trains.size(); ++i)

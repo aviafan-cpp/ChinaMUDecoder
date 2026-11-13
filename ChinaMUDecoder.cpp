@@ -9,7 +9,9 @@
 #include "raylib.h"
 #include "raylib_obj_ex.hpp"
 #include "train_data.hpp"
+#include "train_data_ex.hpp"
 #include "sys_api.hpp"
+#include "stl_map_ex.hpp"
 
 using namespace raylib_obj_ex::coord;
 using namespace raylib_obj_ex::text_ns;
@@ -22,26 +24,28 @@ const int design_fps = 30; // 设计帧率
 std::string current_dir; // 当前目录
 
 const std::string program_name = "中国动车组车号查询";
-const unsigned int program_version = 20261018u;
+const unsigned int program_version = 20261113u;
 
-enum screen {filter_plate_number, about, choose_list_type, train_name_list, filter_train_name, train_type_list, filter_train_type}; // 查询车号（主界面）、筛选列车命名
+enum screen {filter_plate_number, about, train_info, choose_list_type, train_name_list, filter_train_name, train_type_list, filter_train_type};
 screen g_screen = filter_plate_number; // 界面管理
 
 train_data::train_model_manager g_train; // 车辆数据管理器
-std::string plate_number; // 车号
+std::string plate_number; // 车号，有 2 种情况：4 位仅车号 / 6 位车号+车厢号（4+2）（00 代表末尾车厢，无判断意义）
 std::vector<train_data::train_model> temp_train_data; // 临时数据缓存
 std::string temp_plate_number; // 临时缓存车号
+
+train_data_ex::train_info_manager g_train_ex; // 车辆信息管理器
 
 std::map<std::string, std::string> public_data; // 软件全局变量
 
 std::vector<std::string> data_file_info; // 数据文件的信息
 
 Font middle_font;
-Font small_font;
 Texture2D main_menu_train_picture; // 主菜单火车的图片
 
 // 函数定义，实现在文件末尾
 int show_choose_list(coord_calc menu_x, coord_calc menu_y, float position_y, size_t page_number, button middle_button, std::vector<std::string> content); // 批量显示并返回点击
+void open_url_ex(const std::string& url); // 会关闭无边框全屏的 sys_api::open_url
 
 int main(int argc, const char* argv[])
 {
@@ -56,6 +60,7 @@ int main(int argc, const char* argv[])
     };
     current_dir = get_dir(argv[0]);
 
+    // 加载车辆数据
     std::string data_path = current_dir + "/Data/TrainData.txt";
     g_train.add_train_model_from_file(data_path);
     auto get_data_file_info = [](std::string path, char mark_char) -> std::vector<std::string>
@@ -73,6 +78,10 @@ int main(int argc, const char* argv[])
     };
     data_file_info = get_data_file_info(data_path, '#');
 
+    // 加载扩展的信息数据
+    std::string data_ex_path = current_dir + "/Data/TrainDataEx.txt";
+    g_train_ex.load(data_ex_path, false);
+
     InitWindow(design_x, design_y, program_name.c_str());
     SetWindowState(FLAG_WINDOW_RESIZABLE); // 允许用户自由调整窗口大小
     SetWindowMinSize(design_x, design_y); // 设置最小窗口大小
@@ -85,15 +94,13 @@ int main(int argc, const char* argv[])
     middle_font = raylib_obj_ex::font::load_font_chinese(current_dir + "/Font/LXGWWenKai-Regular.ttf", 80, true, false, false, true);
     main_menu_train_picture = LoadTexture((current_dir + "/Picture/1080_1080.jpg").c_str());
 
-    try
-    {
-        if(argc > 1) plate_number = argv[1];
-    }
-    catch(const std::exception& e){}
+    if(argc > 1) plate_number = argv[1];
 
     // 定义UI组件“模版”
+    text small_text; // 小号文字（信息）
     text middle_text; // 普通文字
     text big_text; // 大号文字（标题）
+    button small_button; // 小号按钮
     button middle_button; // 普通按钮
 
     while (!WindowShouldClose())
@@ -103,7 +110,7 @@ int main(int argc, const char* argv[])
         int numberKeys[] = {KEY_ZERO, KEY_ONE, KEY_TWO, KEY_THREE, KEY_FOUR, KEY_FIVE, KEY_SIX, KEY_SEVEN, KEY_EIGHT, KEY_NINE};
         for (int i = 0; i < 10; i++)
         {
-            if (IsKeyPressed(numberKeys[i]) && plate_number.size() < 4)
+            if (IsKeyPressed(numberKeys[i]) && plate_number.size() < 6)
             {
                 plate_number.push_back('0' + i);
             }
@@ -120,9 +127,14 @@ int main(int argc, const char* argv[])
         g_menu_y.runtime_resolution = GetScreenHeight();
 
         // 处理UI组件“模版”
+        small_text.set(middle_font, "", {0, 0}, std::min(g_menu_x.calc(20), g_menu_y.calc(20)), g_menu_x.calc(5), BLUE, raylib_obj_ex::Center)._spacing(0.0f);
         middle_text.set(middle_font, "", {0, 0}, std::min(g_menu_x.calc(30), g_menu_y.calc(30)), g_menu_x.calc(5), BLUE, raylib_obj_ex::Center);
         big_text.set(middle_font, "", {0, 0}, std::min(g_menu_x.calc(40), g_menu_y.calc(40)), g_menu_x.calc(5), BLUE, raylib_obj_ex::Center);
+        small_button.set({0, 0}, {g_menu_x.calc(50), g_menu_y.calc(20)}, SKYBLUE, middle_text)._text_size(small_text.font_size);
         middle_button.set({0, 0}, {g_menu_x.calc(80), g_menu_y.calc(30)}, SKYBLUE, middle_text);
+
+        // 处理无边框全屏的代码
+        if(IsKeyPressed(KEY_F11)) ToggleBorderlessWindowed();
 
         BeginDrawing();
         ClearBackground(WHITE);
@@ -131,9 +143,9 @@ int main(int argc, const char* argv[])
         if(g_screen == filter_plate_number)
         {
             if(plate_number.empty())
-            button(middle_button).set({g_menu_x.calc(0.15f), g_menu_y.calc(5)}, "请输入车号……")._tint(WHITE)._text_size(std::min(g_menu_x.calc(20), g_menu_y.calc(20)))._text_spacing(0)._size_width(g_menu_y.calc(120)).draw();
-        else 
-            button(middle_button).set({g_menu_x.calc(0.15f), g_menu_y.calc(5)}, plate_number)._tint(WHITE)._text_size(std::min(g_menu_x.calc(20), g_menu_y.calc(20)))._text_spacing(0).draw();
+                button(middle_button).set({g_menu_x.calc(0.15f), g_menu_y.calc(5)}, "请输入车号……")._tint(WHITE)._text_size(std::min(g_menu_x.calc(20), g_menu_y.calc(20)))._text_spacing(0)._size_width(g_menu_y.calc(120)).draw();
+            else 
+                button(middle_button).set({g_menu_x.calc(0.15f), g_menu_y.calc(5)}, plate_number)._tint(WHITE)._text_size(std::min(g_menu_x.calc(20), g_menu_y.calc(20)))._text_spacing(0).draw();
         }
         if(g_screen == filter_plate_number && plate_number.size() == 0)
         {
@@ -164,7 +176,7 @@ int main(int argc, const char* argv[])
 
                     // 教程与数据库信息
                     text(middle_text)
-                        .set("输入车辆的四位数车号查询。", {g_menu_x.calc(0.575f), g_menu_y.calc(60)})
+                        .set("输入车辆的四/六位数车(厢)号查询。", {g_menu_x.calc(0.575f), g_menu_y.calc(60)})
                         ._font_size(std::min(g_menu_x.calc(20), g_menu_y.calc(20)))
                         ._spacing(2)
                         ._horizontal(horizontal::Left)
@@ -230,7 +242,8 @@ int main(int argc, const char* argv[])
                     {
                         g_screen = about;
                     }
-                    // 置顶按钮
+                    // 置顶按钮（全屏下为取消全屏）
+                    if(!IsWindowState(FLAG_BORDERLESS_WINDOWED_MODE))
                     {
                         std::string content;
                         if(IsWindowState(FLAG_WINDOW_TOPMOST))
@@ -254,15 +267,61 @@ int main(int argc, const char* argv[])
                                 ClearWindowState(FLAG_WINDOW_TOPMOST);
                         }
                     }
+                    else
+                    {
+                        if(button(middle_button)
+                            .set({float(g_menu_x.runtime_resolution) / 4 * 3, g_menu_y.calc(455)}, "取消全屏(F11)")
+                            ._horizontal(raylib_obj_ex::Center)
+                            ._size({g_menu_x.calc(125), g_menu_y.calc(20)})
+                            ._text_size(std::min(g_menu_x.calc(20), g_menu_y.calc(20)))
+                            ._tint(WHITE)
+                            ._text_spacing(3)
+                            .draw()
+                            .is_clicked()
+                        ) ToggleBorderlessWindowed();
+                    }
                 }
-                else if(plate_number.size() == 4)
+                else if(plate_number.size() == 4 || plate_number.size() == 6)
                 {
                     // 查询界面
 
                     if(plate_number != temp_plate_number) 
                     {
-                        temp_train_data = g_train.find_train_model(std::stoi(plate_number));
+                        // 车号
+                        std::string plate_number_train = plate_number.substr(0, 4);
+                        unsigned int plate_number_train_unsigned;
+                        try
+                        {
+                            plate_number_train_unsigned = std::stoi(plate_number_train);
+                        }
+                        catch(const std::exception&)
+                        {
+                            plate_number.clear();
+                            continue;
+                        }
+                        temp_train_data = g_train.filter_train_model(plate_number_train_unsigned);
                         temp_plate_number = plate_number;
+
+                        if(plate_number.size() == 6)
+                        {
+                            std::string plate_number_car = plate_number.substr(4, 2);
+                            unsigned int plate_number_car_unsigned;
+                            try
+                            {
+                                plate_number_car_unsigned = std::stoi(plate_number_car);
+                            }
+                            catch(const std::exception&)
+                            {
+                                plate_number.clear();
+                                continue;
+                            }
+                            
+                            // 00 代表末尾车厢，无判断意义
+                            if(plate_number_car_unsigned != 0)
+                            {
+                                std::erase_if(temp_train_data, [&plate_number_car_unsigned](const train_data::train_model& t) { return t.cars_number - 1 < plate_number_car_unsigned; });
+                            }
+                        }
                     }
 
                     for(size_t i = 0; i < std::min(temp_train_data.size(), size_t(8)); ++i)
@@ -285,17 +344,29 @@ int main(int argc, const char* argv[])
                             .is_clicked();
                         if(ic)
                         {
-                            if(!temp_train_data[i].science_website_url.empty()) sys_api::open_url(temp_train_data[i].science_website_url);
-                            sys_api::open_url("https://rail.re/#" + temp_train_data[i].name + "-" + plate_number);
+                            if(!g_train_ex.trains.contains(temp_train_data[i].name))
+                            {
+                                if(!temp_train_data[i].science_website_url.empty()) open_url_ex(temp_train_data[i].science_website_url);
+                                open_url_ex("https://rail.re/#" + temp_train_data[i].name + "-" + plate_number);
+                            }
+                            else
+                            {
+                                g_screen = train_info;
+                                public_data["train_info.train_name"] = temp_train_data[i].name;
+                                public_data["train_info.plate_number"] = plate_number;
+                                break;
+                            }
                         }
 
+                        // 显示网址（只在没有本地介绍的情况下启用） 
                         float text_y = g_menu_y.calc(int(50 * (i + 1) + 40));
-                        text(middle_text).set(temp_train_data[i].science_website_url, {g_menu_x.calc(710), text_y})._horizontal(raylib_obj_ex::Right)._font_size(std::min(g_menu_x.calc(15), g_menu_y.calc(15)))._spacing(3).draw();
+                        if(!g_train_ex.trains.contains(temp_train_data[i].name))
+                            text(middle_text).set(temp_train_data[i].science_website_url, {g_menu_x.calc(710), text_y})._horizontal(raylib_obj_ex::Right)._font_size(std::min(g_menu_x.calc(15), g_menu_y.calc(15)))._spacing(3).draw();
                     }
 
                     text(middle_text).set("点击列车名称启动对应的科普网站及使用rail.re查询交路。动力集中动车组车厢数考虑机车。", {g_menu_x.calc(10), g_menu_y.calc(470)})._tint(RED)._font_size(std::min(g_menu_x.calc(15), g_menu_y.calc(15))).draw();
                 }
-                else plate_number = "";
+                else if(plate_number.size() > 6) plate_number.clear();
 
                 break;
             }
@@ -322,12 +393,133 @@ int main(int argc, const char* argv[])
                 };
 
                 std::vector<std::string> show;
-                std::transform(names.begin(), names.end(), std::back_inserter(show), [](const name_and_website_url& nwu) { return nwu.name; });
+                std::ranges::transform(names, std::back_inserter(show), &name_and_website_url::name);
                 int result = show_choose_list(g_menu_x, g_menu_y, 50, 8, middle_button, show);
 
                 if(result >= 0 && result < names.size() && !names[result].website_url.empty())
                 {
-                    sys_api::open_url(names[result].website_url);
+                    open_url_ex(names[result].website_url);
+                }
+
+                break;
+            }
+
+            case train_info:
+            {
+                auto train_name_opt = find_value(public_data, "train_info.train_name");
+                if(!train_name_opt || train_name_opt->empty())
+                {
+                    g_screen = filter_plate_number;
+                    plate_number.clear();
+                    break;
+                }
+                const std::string& train_name = *train_name_opt;
+
+                auto plate_opt = find_value(public_data, "train_info.plate_number");
+                const std::string plate_str = (plate_opt && !plate_opt->empty()) ? *plate_opt : "";
+
+                auto replica = find_value(g_train_ex.trains, train_name);
+                if(!replica)
+                {
+                    g_screen = filter_plate_number;
+                    break;
+                }
+                
+                text(big_text)
+                    ._st(train_name + '-' + plate_str)
+                    ._position({static_cast<float>(g_menu_x.runtime_resolution / 2), g_menu_y.calc(60)})
+                    ._font_size(std::min(g_menu_x.calc(27), g_menu_y.calc(27)))
+                    .draw();
+
+                // 显示信息
+                float content_y = g_menu_y.calc(90);
+                for(auto it : replica->info)
+                {
+                    text(small_text).set(it, {g_menu_x.calc(10), content_y})._spacing(0).draw();
+                    content_y += middle_text.font_size;
+                }
+                // 显示数据
+                for(auto it : replica->datas)
+                {
+                    if(it.second.attribute.contains("invisible")) continue;
+                    text(small_text).set("•" + it.first + "：" + it.second.value, {g_menu_x.calc(10), content_y})._spacing(0).draw();
+                    content_y += middle_text.font_size;
+                }
+
+                std::string science_website_url;
+                bool plan2 = false;
+                // 方案1：查询车型+车号
+                if(!plate_str.empty())
+                {
+                    // 查询车号
+                    std::vector<train_data::train_model> trains;
+                    try{trains = g_train.filter_train_model(std::stoi(plate_str));}
+                    catch(const std::exception&){ plan2 = true; };
+                    // 查询车型
+                    auto train = std::find_if(trains.begin(), trains.end(), [&train_name](const train_data::train_model& it) { return it.name == train_name; });
+                    if(train == trains.end() || train->science_website_url.empty()) plan2 = true;
+                    else science_website_url = train->science_website_url;
+                }
+                else plan2 = true;
+
+                // 方案2：查询车型第一个匹配的网址（为空会继续筛查）
+                if(plan2)
+                {
+                    auto trains = g_train.filter_train_name(train_name);
+                    auto it = std::find_if(trains.begin(), trains.end(), [](const train_data::train_model& t){ return !t.science_website_url.empty(); });
+                    if(it != trains.end()) science_website_url = it->science_website_url;
+                }
+
+                if(!science_website_url.empty())
+                {
+                    // 显示网址
+                    text(middle_text).set(science_website_url, {g_menu_x.calc(10), g_menu_y.calc(470)})._font_size(std::min(g_menu_x.calc(15), g_menu_y.calc(15)))._spacing(3).draw();
+
+                    // 按钮与链接
+                    if
+                    (
+                        button(small_button)
+                            ._text("科普网站")
+                            ._position_x(g_menu_x.runtime_resolution / 4)
+                            ._position_y(g_menu_y.calc(0.9f))
+                            ._tint(WHITE)
+                            ._size_width(small_button.text_size * 4 + g_menu_x.calc(5))
+                            .draw()
+                            .is_clicked()
+                    )
+                    {
+                        open_url_ex(science_website_url);
+                    }
+                }
+                if
+                (
+                    button(small_button)
+                        ._text("交路查询")
+                        ._position_x(g_menu_x.runtime_resolution / 2)
+                        ._position_y(g_menu_y.calc(0.9f))
+                        ._tint(WHITE)
+                        ._size_width(small_button.text_size * 4 + g_menu_x.calc(5))
+                        .draw()
+                        .is_clicked()
+                )
+                {
+                    open_url_ex("https://rail.re/#" + train_name + '-' + plate_str);
+                }
+                if
+                (
+                    button(small_button)
+                        ._text("该型号所有车辆")
+                        ._position_x(g_menu_x.runtime_resolution / 4 * 3)
+                        ._position_y(g_menu_y.calc(0.9f))
+                        ._tint(WHITE)
+                        ._size_width(small_button.text_size * 7 + g_menu_x.calc(10))
+                        .draw()
+                        .is_clicked()
+                )
+                {
+                    g_screen = filter_train_name;
+                    public_data["filter_train_name.train_name"] = train_name;
+                    break;
                 }
 
                 break;
@@ -345,7 +537,7 @@ int main(int argc, const char* argv[])
                 };
 
                 std::vector<std::string> show;
-                std::transform(filter_types.begin(), filter_types.end(), std::back_inserter(show), [](const page& p) { return p.name; });
+                std::ranges::transform(filter_types, std::back_inserter(show), &page::name);
                 int result = show_choose_list(g_menu_x, g_menu_y, 50, 8, middle_button, show);
 
                 if(result >= 0 && result < filter_types.size())
@@ -374,10 +566,9 @@ int main(int argc, const char* argv[])
                 // 查找列车车型名称
                 auto same_type_train = g_train.filter_train_name(public_data["filter_train_name.train_name"]);
                 std::vector<std::string> show_content;
-                for(auto& astt : same_type_train)
-                    show_content.emplace_back(astt.to_string());
+                std::ranges::transform(same_type_train, std::back_inserter(show_content), [](const auto& t) { return t.to_string(); });
                 int result = show_choose_list(g_menu_x, g_menu_y, 50, 8, middle_button, show_content);
-                if(result >= 0 && !same_type_train[result].science_website_url.empty()) sys_api::open_url(same_type_train[result].science_website_url);
+                if(result >= 0 && !same_type_train[result].science_website_url.empty()) open_url_ex(same_type_train[result].science_website_url);
                 break;
             }
 
@@ -399,10 +590,9 @@ int main(int argc, const char* argv[])
                 // 查找列车命名
                 auto same_type_train = g_train.filter_train_type(public_data["filter_train_type.train_type"]);
                 std::vector<std::string> show_content;
-                for(auto& astt : same_type_train)
-                    show_content.emplace_back(astt.to_string());
+                std::ranges::transform(same_type_train, std::back_inserter(show_content), [](const auto& t) { return t.to_string(); });
                 int result = show_choose_list(g_menu_x, g_menu_y, 50, 8, middle_button, show_content);
-                if(result >= 0 && !same_type_train[result].science_website_url.empty()) sys_api::open_url(same_type_train[result].science_website_url);
+                if(result >= 0 && !same_type_train[result].science_website_url.empty()) open_url_ex(same_type_train[result].science_website_url);
                 break;
             }
 
@@ -417,7 +607,6 @@ int main(int argc, const char* argv[])
     }
     
     UnloadFont(middle_font);
-    UnloadFont(small_font);
     UnloadTexture(main_menu_train_picture);
 
     return 0;
@@ -497,4 +686,10 @@ int show_choose_list(coord_calc menu_x, coord_calc menu_y, float position_y, siz
     }
     
     return result;
+}
+
+void open_url_ex(const std::string& url)
+{
+    if(IsWindowState(FLAG_BORDERLESS_WINDOWED_MODE)) ToggleBorderlessWindowed();
+    sys_api::open_url(url);
 }

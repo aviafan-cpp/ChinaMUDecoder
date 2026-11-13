@@ -1,2 +1,4 @@
+train_info.train_name
+train_info.plate_number // 只用于进入界面时的车号
 filter_train_name.train_name
 filter_train_type.train_type
